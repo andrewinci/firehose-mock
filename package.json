@@ -5,7 +5,7 @@
   "scripts": {
     "build": "esbuild src/app.ts --bundle --outfile=dist/app.js --platform=node",
     "lint": "eslint src && yarn prettier --write .",
-    "start": "yarn build && node dist/app.mjs",
+    "start": "yarn build && node dist/app.js",
     "package": "yarn build && docker build . -t firehose-mock"
   },
   "dependencies": {

@@ -14,3 +14,9 @@ app.listen(port, () => {
   // tslint:disable-next-line:no-console
   console.log(`server started at http://localhost:${port}`);
 });
+
+process.on("SIGINT", function () {
+  console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
+  // some other closing procedures go here
+  process.exit(0);
+});

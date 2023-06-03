@@ -1,4 +1,5 @@
-FROM node:18.16.0-alpine3.18
+FROM alpine
+RUN apk add --update nodejs
 ADD "dist/*" .
 EXPOSE 8080
 CMD ["node", "app.js"]
