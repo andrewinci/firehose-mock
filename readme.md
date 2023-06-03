@@ -4,10 +4,10 @@ AWS firehose mock server for testing.
 
 ## Dev
 
-Run the server locally with
+Run the app locally with hot reload
 
 ```bash
-yarn start
+yarn dev
 ```
 
 Lint
