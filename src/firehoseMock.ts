@@ -3,6 +3,8 @@
 
 import { v4 as uuid } from "uuid";
 import {
+  CreateDeliveryStreamRequest,
+  CreateDeliveryStreamResponse,
   ErrorResponse,
   ListDeliveryStreamsRequest,
   ListDeliveryStreamsResponse,
@@ -53,10 +55,22 @@ const putRecord = (
   };
 };
 
+const createDeliveryStream = (
+  req: CreateDeliveryStreamRequest,
+  state: State
+): CreateDeliveryStreamResponse => {
+  state.deliveryStreams[req.DeliveryStreamName] = { records: [] };
+  return {
+    //just a fake arn from the aws documentation
+    DeliveryStreamARN: `arn:aws:firehose:us-east-1:814985986679:deliverystream/${req.DeliveryStreamName}`,
+  };
+};
+
 // handlers
 const targetHandlers: Record<string, (req: any, state: State) => any> = {
   "Firehose_20150804.ListDeliveryStreams": listDeliveryStreams,
   "Firehose_20150804.PutRecord": putRecord,
+  "Firehose_20150804.CreateDeliveryStream": createDeliveryStream,
 };
 
 export const firehoseMock = {
@@ -79,7 +93,12 @@ export const firehoseMock = {
       };
     } else {
       console.warn("Unsupported target ", target, body);
-      return { status: 400 };
+      return {
+        status: 400,
+        body: {
+          message: "Unsupported operation in firehose-mock",
+        },
+      };
     }
   },
 };

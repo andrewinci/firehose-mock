@@ -3,6 +3,12 @@ export type State = {
   deliveryStreams: Record<string, { records: { id: string; content: any }[] }>;
 };
 
+// Handler error
+export type ErrorResponse = {
+  errorCode: number;
+  errorMessage: string;
+};
+
 // ListDeliveryStreams
 export type ListDeliveryStreamsRequest = {
   DeliveryStreamType?: string;
@@ -28,7 +34,11 @@ export type PutRecordResponse = {
   RecordId: string;
 };
 
-export type ErrorResponse = {
-  errorCode: number;
-  errorMessage: string;
+// CreateDeliveryStream
+export type CreateDeliveryStreamRequest = {
+  DeliveryStreamName: string;
+};
+
+export type CreateDeliveryStreamResponse = {
+  DeliveryStreamARN: string;
 };

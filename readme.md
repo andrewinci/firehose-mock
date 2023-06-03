@@ -1,6 +1,21 @@
 # Firehose mock
 
-AWS firehose mock server for testing.
+Mock server for AWS firehose to facilitate testing.
+
+## Supported operations
+
+- [x] CreateDeliveryStream
+- [x] ListDeliveryStreams
+- [x] PutRecord
+- [ ] PutRecordBatch
+- [ ] DeleteDeliveryStream
+- [ ] DescribeDeliveryStream
+- [ ] StartDeliveryStreamEncryption
+- [ ] StopDeliveryStreamEncryption
+- [ ] ListTagsForDeliveryStream
+- [ ] TagDeliveryStream
+- [ ] UntagDeliveryStream
+- [ ] UpdateDestination
 
 ## Dev
 
