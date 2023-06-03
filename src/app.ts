@@ -10,7 +10,18 @@ app.use(express.json({ strict: false, type: "*/*" }));
 
 // return the firehose state to inspect the status
 app.get("/", (_req, res) => {
-  res.status(200).send(JSON.stringify(firehoseMock.getState(), null, 2));
+  const streams = Object.entries(firehoseMock.getState().deliveryStreams);
+  const page = `
+  <h1>Firehose mock</h1>
+  <h2>Stream list</h2>
+  ${streams.map(
+    (v) =>
+      `<h3>${v[0]}</h3><p>${v[1].records
+        .map((r) => `${r.id} - ${r.content}`)
+        .join("</br>")}</p>`
+  )}
+`;
+  res.status(200).send(page);
 });
 
 // handle amazon client requests
