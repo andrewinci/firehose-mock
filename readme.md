@@ -2,6 +2,12 @@
 
 Mock server for AWS firehose to facilitate testing.
 
+Run the latest version with docker 
+
+```bash
+docker run -p8080:8080 --rm andrewinci/firehose-mock
+```
+
 ## Supported operations
 
 - [x] CreateDeliveryStream
