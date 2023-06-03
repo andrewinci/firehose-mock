@@ -1,31 +1,36 @@
 import express from "express";
+import { firehoseMock } from "./firehoseMock";
 //todo: add logging https://github.com/expressjs/morgan
-const state = {
-  deliveryStreams: [{ name: "test", message: [] }],
-};
 const app = express();
 const port = 8080; // default port to listen
 
-app.use(express.json());
+// amazon cli uses a custom mime type, here we want to accept anything
+// to cover also that case
+app.use(express.json({ strict: false, type: "*/*" }));
 
-// define a route handler for the default home page
-app.get("/", (req, res) => {
-  // render the index template
-  res.send("Hello from express 23");
+// return the firehose state to inspect the status
+app.get("/", (_req, res) => {
+  res.status(200).send(JSON.stringify(firehoseMock.getState(), null, 2));
+});
+
+// handle amazon client requests
+app.post("/", (req, res) => {
+  const target = req.headers["x-amz-target"];
+  if (target && typeof target === "string") {
+    const response = firehoseMock.handle(target, req.body);
+    res.status(response.status).send(response.body);
+  } else {
+    console.info(
+      "Invalid request received. Missing or invalid target ",
+      target
+    );
+    res.sendStatus(400);
+  }
 });
 
 // start the express server
 app.listen(port, () => {
-  // tslint:disable-next-line:no-console
   console.log(`Server started at http://localhost:${port}`);
-});
-
-app.use((req, res) => {
-  console.debug(req.body);
-  res.status(200).json({
-    DeliveryStreamNames: state.deliveryStreams,
-    HasMoreDeliveryStreams: state.deliveryStreams.length > 0,
-  });
 });
 
 process.on("SIGINT", function () {
